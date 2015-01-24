@@ -194,8 +194,7 @@ public class MainActivity extends ActionBarActivity
             public void run() {
                 if( messageEvent.getPath().equalsIgnoreCase( WEAR_MESSAGE_PATH ) ) {
                     Log.d(TAG, "got message");
-                    Toast.makeText(getBaseContext(), "processing message",
-                            Toast.LENGTH_SHORT).show();
+
 
                     // perform the api call
 
@@ -204,6 +203,9 @@ public class MainActivity extends ActionBarActivity
                     Log.d(TAG, "data: " + data);
                     Log.d(TAG, "url: " + data.split(DELIM)[0]);
                     Log.d(TAG, "json: " + data.split(DELIM)[1]);
+
+                    Toast.makeText(getBaseContext(), "processing message: " + data,
+                            Toast.LENGTH_SHORT).show();
 
 
                     String url = data.split(DELIM)[0];

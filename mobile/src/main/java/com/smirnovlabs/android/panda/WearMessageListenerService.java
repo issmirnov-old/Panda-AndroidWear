@@ -11,11 +11,15 @@ import com.koushikdutta.ion.Ion;
  * TODO - this might be deprecated. delete?
  */
 public class WearMessageListenerService extends WearableListenerService {
-    private static final String START_ACTIVITY = "/panda_communication_activity";
+    private static final String LONGTERM_ACTIVITY = "/panda_service";
+
+    private final String DELIM = "#";
+
+    private String TAG = "PANDA";
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        if( messageEvent.getPath().equalsIgnoreCase( START_ACTIVITY ) ) {
+        if( messageEvent.getPath().equalsIgnoreCase(LONGTERM_ACTIVITY) ) {
             // perform the api call
             // TODO -  extract the url and json string payload, then perform the API call.
             // upon getting the result, send it back in a message, and maybe display a toast on mobile as well.

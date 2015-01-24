@@ -26,6 +26,11 @@ import static com.smirnovlabs.android.panda.Constants.NEXT_SONG;
 import static com.smirnovlabs.android.panda.Constants.PANDA_BASE_URL;
 import static com.smirnovlabs.android.panda.Constants.PLAY_SONG;
 import static com.smirnovlabs.android.panda.Constants.PREV_SONG;
+import static com.smirnovlabs.android.panda.Constants.PAUSE;
+import static com.smirnovlabs.android.panda.Constants.RESUME;
+import static com.smirnovlabs.android.panda.Constants.VOL_DOWN;
+import static com.smirnovlabs.android.panda.Constants.VOL_SET;
+import static com.smirnovlabs.android.panda.Constants.VOL_UP;
 
 public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCallbacks{
 
@@ -107,12 +112,13 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
     private void processCommand(String text) {
         String[] tokens = text.split(" ");
         JsonObject data = new JsonObject();
+        String payload = "";
 
         Log.d(TAG, "parsing command");
 
         switch (tokens[0]) {
             case "play":
-                String payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens,1, tokens.length));
+                payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens,1, tokens.length));
                 System.out.println("payload: " + payload);
                 // add to json
                 data.addProperty("query", payload);
@@ -135,7 +141,29 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
                 sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + PREV_SONG, data);
                 break;
 
-            // TODO add volume
+            case "pause":
+                sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + PAUSE, data);
+                break;
+
+            case "resume":
+                sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + RESUME, data);
+                break;
+            case "volume":
+                if (tokens[1].equals("up")) {
+                    sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + VOL_UP, data);
+                } else if (tokens[1].equals("down")) {
+                    sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + VOL_DOWN, data);
+                } else if (tokens[1].equals("set")) {
+                    payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens, 2, tokens.length));
+                    System.out.println("payload: " + payload);
+                    data.addProperty("value", payload);
+                    sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + VOL_SET, data);
+                }
+
+                break;
+
+            default:
+                Log.d(TAG, "unknown command");
         }
 
     }
@@ -155,7 +183,6 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
         mApiClient = new GoogleApiClient.Builder( this )
                 .addApi( Wearable.API )
                 .build();
-
         mApiClient.connect();
     }
 
