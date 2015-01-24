@@ -148,6 +148,10 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
                 sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + PAUSE, data);
                 break;
 
+            case "paws": //TODO decide whether to keep or not
+                sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + PAUSE, data);
+                break;
+
             case "resume":
                 sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + RESUME, data);
                 break;
