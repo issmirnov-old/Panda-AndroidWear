@@ -9,7 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.common.base.Joiner;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
+import java.util.Arrays;
 import java.util.List;
+
+import static com.smirnovlabs.android.panda.Constants.MUSIC_API_URL;
+import static com.smirnovlabs.android.panda.Constants.PANDA_BASE_URL;
+import static com.smirnovlabs.android.panda.Constants.PLAY_SONG;
 
 public class VoiceInput extends Activity {
 
@@ -38,10 +48,7 @@ public class VoiceInput extends Activity {
 
         // DO NOT PUT findViewByID() here - will return null, since context is in fragment
 
-
-
-
-        // debug. later, call this from button click. or maybe just show right away?
+        // Show this on app open, to save us a click.
         displaySpeechRecognizer();
     }
 
@@ -68,10 +75,70 @@ public class VoiceInput extends Activity {
         if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
+
             String spokenText = results.get(0);
-            // Do something with spokenText
-            System.out.printf("Spoken Text: %s \n", spokenText);
+            System.out.printf("Spoken Text: %s \n", spokenText); // debug TODO remove me in final version
+            processCommand(spokenText);
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * Given a command, perform relevant API call to Panda on Puma.
+     * */
+    private void processCommand(String text) {
+        String[] tokens = text.split(" ");
+        JsonObject data = new JsonObject();
+
+        switch (tokens[0]) {
+            case "play":
+                String payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens,1, tokens.length));
+
+
+                System.out.println("payload: " + payload);
+
+                // add to json
+                data.addProperty("query", payload);
+                performAPICall(PANDA_BASE_URL + MUSIC_API_URL + PLAY_SONG , data);
+
+                break;
+
+            case "next":
+                break;
+
+            case "skip":
+
+                break;
+
+            case "previous":
+                break;
+
+            case "back":
+                break;
+        }
+
+    }
+
+    /**
+     * Performs async API call to Panda server. Returns result from server as string.
+     * */
+    private void performAPICall(String url, JsonObject data ) {
+        Ion.with(getApplicationContext())
+            .load(url)
+            .setJsonObjectBody(data)
+            .asJsonObject()
+            .setCallback(new FutureCallback<JsonObject>() {
+                @Override
+                public void onCompleted(Exception e, JsonObject result) {
+                    // do stuff with the result or error
+                    displayResult(result);
+                }
+            });
+    }
+
+    /** Processed returned json from server, displays to user if needed. */
+    private void displayResult(JsonObject result) {
+        System.out.printf("Returned json: %s \n", result.toString());
+        // TODO implement me
     }
 }

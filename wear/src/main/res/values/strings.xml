@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Panda</string>
-    <string name="hello_round">Hello Round World!</string>
-    <string name="hello_square">Hello Square World!</string>
+    <string name="listen_button_text">Listen</string>
+    <string name="panda_welcome">Panda</string>
 
 </resources>
