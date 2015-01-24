@@ -39,7 +39,7 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
 
     private String TAG = "PANDA WEAR";
 
-    private final String DELIM = "&*&";
+    private final String DELIM = "#";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +145,7 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
    private void sendAPICall(String url, JsonObject data) {
        // TODO - send a message here, wait for result
        String payload = url + DELIM + data.toString();
-       Log.d(TAG, "sending message");
+       Log.d(TAG, "sending message, bytes: " + payload);
        sendMessage(WEAR_MESSAGE_PATH, payload);
    }
 

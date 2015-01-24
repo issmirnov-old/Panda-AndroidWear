@@ -31,7 +31,7 @@ public class MainActivity extends ActionBarActivity
     private static final String WEAR_MESSAGE_PATH = "/panda_communication_activity";
     private GoogleApiClient mApiClient;
 
-    private final String DELIM = "&*&";
+    private final String DELIM = "#";
 
     private String TAG = "PANDA";
     /**
@@ -198,7 +198,8 @@ public class MainActivity extends ActionBarActivity
                             Toast.LENGTH_SHORT).show();
 
                     // perform the api call
-                    String data = messageEvent.getData().toString();
+
+                    String data = new String(messageEvent.getData()); // DO NOT use toString() - will causes errors.
 
                     Log.d(TAG, "data: " + data);
                     Log.d(TAG, "url: " + data.split(DELIM)[0]);
@@ -207,7 +208,7 @@ public class MainActivity extends ActionBarActivity
 
                     String url = data.split(DELIM)[0];
 
-                    JsonObject jsonData = (JsonObject) jsonParser.parse(data.split(DELIM)[1]); // crashes here
+                    JsonObject jsonData = jsonParser.parse(data.split(DELIM)[1]).getAsJsonObject(); // crashes here
 
                     Log.d(TAG, "url: " + url + " and json: " + jsonData.toString());
                     performAPICall(url, jsonData);
