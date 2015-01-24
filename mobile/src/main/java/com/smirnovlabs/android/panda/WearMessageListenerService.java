@@ -26,6 +26,7 @@ public class WearMessageListenerService extends WearableListenerService {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         if( messageEvent.getPath().equalsIgnoreCase(LONGTERM_ACTIVITY) ) {
+            jsonParser = new JsonParser();
             // perform the api call
             // TODO -  extract the url and json string payload, then perform the API call.
             // upon getting the result, send it back in a message, and maybe display a toast on mobile as well.
