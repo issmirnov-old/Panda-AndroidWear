@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity
 
     private final String DELIM = "#";
 
-    private String TAG = "PANDA";
+    private String TAG = "PANDA MOBILE";
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -184,6 +184,7 @@ public class MainActivity extends ActionBarActivity
         super.onStart();
     }
 
+    // TODO remove message receiving capability, move to service instead
     @Override
     public void onMessageReceived( final MessageEvent messageEvent ) {
         Log.d(TAG, "got message on phone");
@@ -210,7 +211,7 @@ public class MainActivity extends ActionBarActivity
 
                     String url = data.split(DELIM)[0];
 
-                    JsonObject jsonData = jsonParser.parse(data.split(DELIM)[1]).getAsJsonObject(); // crashes here
+                    JsonObject jsonData = jsonParser.parse(data.split(DELIM)[1]).getAsJsonObject(); // crashes here TODO handle null case- see wearable activity
 
                     Log.d(TAG, "url: " + url + " and json: " + jsonData.toString());
                     performAPICall(url, jsonData);

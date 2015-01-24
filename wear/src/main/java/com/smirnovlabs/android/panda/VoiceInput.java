@@ -39,6 +39,11 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
 
     /** Tag used for message passing. */
     private static final String WEAR_MESSAGE_PATH = "/panda_communication_activity";
+
+
+    /** debug trying to use service*/
+    private static final String LONGTERM_ACTIVITY = "/panda_service";
+
     /** Google API client used for message passing. */
     private GoogleApiClient mApiClient;
 
@@ -174,7 +179,8 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
        // TODO - send a message here, wait for result
        String payload = url + DELIM + data.toString();
        Log.d(TAG, "sending message, bytes: " + payload);
-       sendMessage(WEAR_MESSAGE_PATH, payload);
+       // sendMessage(WEAR_MESSAGE_PATH, payload); // TODO decide which to keep. maybe both?
+       sendMessage(LONGTERM_ACTIVITY, payload); // try service instead
    }
 
 
