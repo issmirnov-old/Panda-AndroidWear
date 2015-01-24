@@ -37,14 +37,20 @@ public class WearMessageListenerService extends WearableListenerService {
                     Toast.LENGTH_SHORT).show();
 
             String url = data.split(DELIM)[0];
-            if (!data.split(DELIM)[1].equals("{}")) {
+
+            JsonObject jsonData = jsonParser.parse(data.split(DELIM)[1]).getAsJsonObject();
+            Log.d(TAG, "url: " + url + " and json: " + jsonData.toString());
+            performAPICall(url, jsonData);
+
+            /*if (!data.split(DELIM)[1].equals("{}")) {
                 JsonObject jsonData = jsonParser.parse(data.split(DELIM)[1]).getAsJsonObject(); // crashes here
                 Log.d(TAG, "url: " + url + " and json: " + jsonData.toString());
                 performAPICall(url, jsonData);
             } else {
                 Log.d(TAG, "url: " + url );
                 performAPICall(url);
-            }
+            }*/
+
             // TODO - upon getting the result, send it back in a message, and maybe display a toast on mobile as well.
 
         } else {

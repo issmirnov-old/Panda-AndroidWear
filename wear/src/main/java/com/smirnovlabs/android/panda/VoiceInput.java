@@ -123,6 +123,10 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
 
         switch (tokens[0]) {
             case "play":
+                if (tokens.length == 1) {
+                    sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + RESUME, data);
+                    break;
+                }
                 payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens,1, tokens.length));
                 System.out.println("payload: " + payload);
                 // add to json
@@ -152,6 +156,15 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
 
             case "resume":
                 sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + RESUME, data);
+                break;
+
+            case "set":
+                if (tokens[1].equals("volume")) {
+                    payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens, 2, tokens.length));
+                    System.out.println("payload: " + payload);
+                    data.addProperty("value", payload);
+                    sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + VOL_SET, data);
+                }
                 break;
             case "volume":
                 if (tokens[1].equals("up")) {
