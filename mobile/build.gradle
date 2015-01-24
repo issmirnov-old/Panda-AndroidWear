@@ -30,4 +30,7 @@ dependencies {
 
     // String utils
     compile group: 'com.google.guava', name: 'guava', version: '12.0'
+
+    // Packaging this into an APK for fast deployment
+    wearApp project(':wear')
 }
