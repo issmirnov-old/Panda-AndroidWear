@@ -30,10 +30,6 @@ dependencies {
     compile 'com.koushikdutta.ion:ion:2.+'
 
     // String utils
-    //'com.google.collections:google-collections:1.0-rc2'
-    //'commons-io:commons-io:2.4'
-    //'org.apache.commons:commons-lang3:3.0'
-
     compile group: 'com.google.guava', name: 'guava', version: '12.0'
 
 }

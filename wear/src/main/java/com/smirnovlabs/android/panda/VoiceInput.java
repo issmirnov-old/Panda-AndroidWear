@@ -18,8 +18,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.smirnovlabs.android.panda.Constants.MUSIC_API_URL;
+import static com.smirnovlabs.android.panda.Constants.NEXT_SONG;
 import static com.smirnovlabs.android.panda.Constants.PANDA_BASE_URL;
 import static com.smirnovlabs.android.panda.Constants.PLAY_SONG;
+import static com.smirnovlabs.android.panda.Constants.PREV_SONG;
 
 public class VoiceInput extends Activity {
 
@@ -93,28 +95,29 @@ public class VoiceInput extends Activity {
         switch (tokens[0]) {
             case "play":
                 String payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens,1, tokens.length));
-
-
                 System.out.println("payload: " + payload);
-
                 // add to json
                 data.addProperty("query", payload);
                 performAPICall(PANDA_BASE_URL + MUSIC_API_URL + PLAY_SONG , data);
-
                 break;
 
             case "next":
+                performAPICall(PANDA_BASE_URL + MUSIC_API_URL + NEXT_SONG , data);
                 break;
 
             case "skip":
-
+                performAPICall(PANDA_BASE_URL + MUSIC_API_URL + NEXT_SONG , data);
                 break;
 
             case "previous":
+                performAPICall(PANDA_BASE_URL + MUSIC_API_URL + PREV_SONG , data);
                 break;
 
             case "back":
+                performAPICall(PANDA_BASE_URL + MUSIC_API_URL + PREV_SONG , data);
                 break;
+
+            // TODO add volume
         }
 
     }
@@ -123,6 +126,7 @@ public class VoiceInput extends Activity {
      * Performs async API call to Panda server. Returns result from server as string.
      * */
     private void performAPICall(String url, JsonObject data ) {
+        System.out.printf("performing API call to %s with dataJson: %s: ", url, data.toString());
         Ion.with(getApplicationContext())
             .load(url)
             .setJsonObjectBody(data)
@@ -138,6 +142,10 @@ public class VoiceInput extends Activity {
 
     /** Processed returned json from server, displays to user if needed. */
     private void displayResult(JsonObject result) {
+        if (result == null) {
+            System.out.printf("Null result. Did you finish the API calls?");
+            return;
+        }
         System.out.printf("Returned json: %s \n", result.toString());
         // TODO implement me
     }
