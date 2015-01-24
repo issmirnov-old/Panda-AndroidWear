@@ -7,24 +7,33 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.MessageEvent;
+import com.google.android.gms.wearable.Wearable;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
-import static com.smirnovlabs.android.panda.Constants.MUSIC_API_URL;
-import static com.smirnovlabs.android.panda.Constants.PANDA_BASE_URL;
-import static com.smirnovlabs.android.panda.Constants.PLAY_SONG;
-
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MessageApi.MessageListener, GoogleApiClient.ConnectionCallbacks { // MessageApi.MessageListener, GoogleApiClient.ConnectionCallbacks
 
+    private static final String WEAR_MESSAGE_PATH = "/panda_communication_activity";
+    private GoogleApiClient mApiClient;
+
+    private final String DELIM = "&*&";
+
+    private String TAG = "PANDA";
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -34,6 +43,9 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+
+    private JsonParser jsonParser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +61,9 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        jsonParser = new JsonParser();
 
-        // perform dummy API call here
-        JsonObject data = new JsonObject();
-        data.addProperty("query", "ellie goulding");
-        performAPICall(PANDA_BASE_URL + MUSIC_API_URL + PLAY_SONG , data);
+        initGoogleApiClient();
 
     }
 
@@ -143,6 +153,108 @@ public class MainActivity extends ActionBarActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
+
+
+    // ===== message passing
+
+    private void initGoogleApiClient() {
+        mApiClient = new GoogleApiClient.Builder( this )
+                .addApi( Wearable.API )
+                .addConnectionCallbacks( this )
+                .build();
+
+        if( mApiClient != null && !( mApiClient.isConnected() || mApiClient.isConnecting() ) )
+            mApiClient.connect();
+        Log.d(TAG, "connected client");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if( mApiClient != null && !( mApiClient.isConnected() || mApiClient.isConnecting() ) )
+            mApiClient.connect();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onMessageReceived( final MessageEvent messageEvent ) {
+        Log.d(TAG, "got message on phone");
+
+
+        runOnUiThread( new Runnable() {
+            @Override
+            public void run() {
+                if( messageEvent.getPath().equalsIgnoreCase( WEAR_MESSAGE_PATH ) ) {
+                    Log.d(TAG, "got message");
+                    Toast.makeText(getBaseContext(), "processing message",
+                            Toast.LENGTH_SHORT).show();
+
+                    // perform the api call
+                    String data = messageEvent.getData().toString();
+
+                    Log.d(TAG, "data: " + data);
+                    Log.d(TAG, "url: " + data.split(DELIM)[0]);
+                    Log.d(TAG, "json: " + data.split(DELIM)[1]);
+
+
+                    String url = data.split(DELIM)[0];
+
+                    JsonObject jsonData = (JsonObject) jsonParser.parse(data.split(DELIM)[1]); // crashes here
+
+                    Log.d(TAG, "url: " + url + " and json: " + jsonData.toString());
+                    performAPICall(url, jsonData);
+
+
+                    // TODO - upon getting the result, send it back in a message, and maybe display a toast on mobile as well.
+
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Wearable.MessageApi.addListener( mApiClient, this );
+    }
+
+    @Override
+    protected void onStop() {
+        if ( mApiClient != null ) {
+            Wearable.MessageApi.removeListener( mApiClient, this );
+            if ( mApiClient.isConnected() ) {
+                mApiClient.disconnect();
+            }
+        }
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if( mApiClient != null )
+            mApiClient.unregisterConnectionCallbacks( this );
+        super.onDestroy();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+
+
+    // ====== end message passing
+
+
+
+
 
     /**
      * A placeholder fragment containing a simple view.

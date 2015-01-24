@@ -5,14 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.wearable.view.WatchViewStub;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.Wearable;
 import com.google.common.base.Joiner;
 import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,10 +27,19 @@ import static com.smirnovlabs.android.panda.Constants.PANDA_BASE_URL;
 import static com.smirnovlabs.android.panda.Constants.PLAY_SONG;
 import static com.smirnovlabs.android.panda.Constants.PREV_SONG;
 
-public class VoiceInput extends Activity {
+public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCallbacks{
 
     private TextView mTextView;
     private static final int SPEECH_REQUEST_CODE = 539890;
+
+    /** Tag used for message passing. */
+    private static final String WEAR_MESSAGE_PATH = "/panda_communication_activity";
+    /** Google API client used for message passing. */
+    private GoogleApiClient mApiClient;
+
+    private String TAG = "PANDA WEAR";
+
+    private final String DELIM = "&*&";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +60,9 @@ public class VoiceInput extends Activity {
                 });
             }
         });
+
+        // prepare for message passing
+        initGoogleApiClient();
 
         // DO NOT PUT findViewByID() here - will return null, since context is in fragment
 
@@ -92,29 +108,31 @@ public class VoiceInput extends Activity {
         String[] tokens = text.split(" ");
         JsonObject data = new JsonObject();
 
+        Log.d(TAG, "parsing command");
+
         switch (tokens[0]) {
             case "play":
                 String payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens,1, tokens.length));
                 System.out.println("payload: " + payload);
                 // add to json
                 data.addProperty("query", payload);
-                performAPICall(PANDA_BASE_URL + MUSIC_API_URL + PLAY_SONG , data);
+                sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + PLAY_SONG, data);
                 break;
 
             case "next":
-                performAPICall(PANDA_BASE_URL + MUSIC_API_URL + NEXT_SONG , data);
+                sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + NEXT_SONG, data);
                 break;
 
             case "skip":
-                performAPICall(PANDA_BASE_URL + MUSIC_API_URL + NEXT_SONG , data);
+                sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + NEXT_SONG, data);
                 break;
 
             case "previous":
-                performAPICall(PANDA_BASE_URL + MUSIC_API_URL + PREV_SONG , data);
+                sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + PREV_SONG, data);
                 break;
 
             case "back":
-                performAPICall(PANDA_BASE_URL + MUSIC_API_URL + PREV_SONG , data);
+                sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + PREV_SONG, data);
                 break;
 
             // TODO add volume
@@ -122,31 +140,65 @@ public class VoiceInput extends Activity {
 
     }
 
-    /**
-     * Performs async API call to Panda server. Returns result from server as string.
-     * */
-    private void performAPICall(String url, JsonObject data ) {
-        System.out.printf("performing API call to %s with dataJson: %s: ", url, data.toString());
-        Ion.with(getApplicationContext())
-            .load(url)
-            .setJsonObjectBody(data)
-            .asJsonObject()
-            .setCallback(new FutureCallback<JsonObject>() {
-                @Override
-                public void onCompleted(Exception e, JsonObject result) {
-                    // do stuff with the result or error
-                    displayResult(result);
-                }
-            });
+
+    /* Sends a url and data object to the phone (PandaCommunicationActivity) for a REST API call. */
+   private void sendAPICall(String url, JsonObject data) {
+       // TODO - send a message here, wait for result
+       String payload = url + DELIM + data.toString();
+       Log.d(TAG, "sending message");
+       sendMessage(WEAR_MESSAGE_PATH, payload);
+   }
+
+
+
+    private void initGoogleApiClient() {
+        mApiClient = new GoogleApiClient.Builder( this )
+                .addApi( Wearable.API )
+                .build();
+
+        mApiClient.connect();
     }
 
-    /** Processed returned json from server, displays to user if needed. */
-    private void displayResult(JsonObject result) {
-        if (result == null) {
-            System.out.printf("Null result. Did you finish the API calls?");
-            return;
-        }
-        System.out.printf("Returned json: %s \n", result.toString());
-        // TODO implement me
+    @Override
+    public void onConnected(Bundle bundle) {
+        //sendMessage( START_ACTIVITY, "" );
+        // we don't use this, but can be used to trigger an action on connect. perhaps show a toast?
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        // do nothing.
+
+    }
+
+    /** */
+    private void sendMessage( final String path, final String text ) {
+        new Thread( new Runnable() {
+            @Override
+            public void run() {
+                NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes( mApiClient ).await();
+                for(Node node : nodes.getNodes()) {
+                    MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
+                            mApiClient, node.getId(), path, text.getBytes() ).await();
+                }
+
+                // display result
+                runOnUiThread( new Runnable() {
+                    @Override
+                    public void run() {
+                        // TODO - Show toast on phone with command ran
+
+                        // mEditText.setText( "" );
+                    }
+                });
+            }
+        }).start();
+    }
+
+    /** Disconnect from node when app quits. */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mApiClient.disconnect();
     }
 }
