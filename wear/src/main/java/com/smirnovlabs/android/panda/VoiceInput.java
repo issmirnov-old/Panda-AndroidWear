@@ -1,10 +1,12 @@
-package com.smirnovlabs.android.homecontrol;
+package com.smirnovlabs.android.panda;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.wearable.view.WatchViewStub;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -23,8 +25,21 @@ public class VoiceInput extends Activity {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
                 mTextView = (TextView) stub.findViewById(R.id.text);
+                // add button click listener
+                Button voiceButton  = (Button) findViewById(R.id.start_voice_input);
+                voiceButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        displaySpeechRecognizer();
+                    }
+                });
             }
         });
+
+        // DO NOT PUT findViewByID() here - will return null, since context is in fragment
+
+
+
 
         // debug. later, call this from button click. or maybe just show right away?
         displaySpeechRecognizer();

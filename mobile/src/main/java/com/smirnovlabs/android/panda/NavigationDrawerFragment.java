@@ -1,4 +1,4 @@
-package com.smirnovlabs.android.homecontrol;
+package com.smirnovlabs.android.panda;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
