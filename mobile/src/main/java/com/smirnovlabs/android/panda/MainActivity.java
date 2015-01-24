@@ -7,18 +7,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.wearable.MessageApi;
-import com.google.android.gms.wearable.MessageEvent;
-import com.google.android.gms.wearable.Wearable;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.koushikdutta.async.future.FutureCallback;
@@ -26,12 +20,7 @@ import com.koushikdutta.ion.Ion;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MessageApi.MessageListener, GoogleApiClient.ConnectionCallbacks { // MessageApi.MessageListener, GoogleApiClient.ConnectionCallbacks
-
-    private static final String WEAR_MESSAGE_PATH = "/panda_communication_activity";
-    private GoogleApiClient mApiClient;
-
-    private final String DELIM = "#";
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private String TAG = "PANDA MOBILE";
     /**
@@ -62,8 +51,6 @@ public class MainActivity extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         jsonParser = new JsonParser();
-
-        initGoogleApiClient();
 
     }
 
@@ -153,112 +140,6 @@ public class MainActivity extends ActionBarActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
-
-
-    // ===== message passing
-
-    private void initGoogleApiClient() {
-        mApiClient = new GoogleApiClient.Builder( this )
-                .addApi( Wearable.API )
-                .addConnectionCallbacks( this )
-                .build();
-
-        if( mApiClient != null && !( mApiClient.isConnected() || mApiClient.isConnecting() ) )
-            mApiClient.connect();
-        Log.d(TAG, "connected client");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if( mApiClient != null && !( mApiClient.isConnected() || mApiClient.isConnecting() ) )
-            mApiClient.connect();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    // TODO remove message receiving capability, move to service instead
-    @Override
-    public void onMessageReceived( final MessageEvent messageEvent ) {
-        Log.d(TAG, "got message on phone");
-
-
-        runOnUiThread( new Runnable() {
-            @Override
-            public void run() {
-                if( messageEvent.getPath().equalsIgnoreCase( WEAR_MESSAGE_PATH ) ) {
-                    Log.d(TAG, "got message");
-
-
-                    // perform the api call
-
-                    String data = new String(messageEvent.getData()); // DO NOT use toString() - will causes errors.
-
-                    Log.d(TAG, "data: " + data);
-                    Log.d(TAG, "url: " + data.split(DELIM)[0]);
-                    Log.d(TAG, "json: " + data.split(DELIM)[1]);
-
-                    Toast.makeText(getBaseContext(), "processing message: " + data,
-                            Toast.LENGTH_SHORT).show();
-
-
-                    String url = data.split(DELIM)[0];
-
-                    JsonObject jsonData = jsonParser.parse(data.split(DELIM)[1]).getAsJsonObject(); // crashes here TODO handle null case- see wearable activity
-
-                    Log.d(TAG, "url: " + url + " and json: " + jsonData.toString());
-                    performAPICall(url, jsonData);
-
-
-                    // TODO - upon getting the result, send it back in a message, and maybe display a toast on mobile as well.
-
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        Wearable.MessageApi.addListener( mApiClient, this );
-    }
-
-    @Override
-    protected void onStop() {
-        if ( mApiClient != null ) {
-            Wearable.MessageApi.removeListener( mApiClient, this );
-            if ( mApiClient.isConnected() ) {
-                mApiClient.disconnect();
-            }
-        }
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        if( mApiClient != null )
-            mApiClient.unregisterConnectionCallbacks( this );
-        super.onDestroy();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-
-
-    // ====== end message passing
-
-
-
-
 
     /**
      * A placeholder fragment containing a simple view.

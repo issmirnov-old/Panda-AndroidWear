@@ -8,7 +8,6 @@ import android.support.wearable.view.WatchViewStub;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
@@ -24,9 +23,9 @@ import java.util.List;
 import static com.smirnovlabs.android.panda.Constants.MUSIC_API_URL;
 import static com.smirnovlabs.android.panda.Constants.NEXT_SONG;
 import static com.smirnovlabs.android.panda.Constants.PANDA_BASE_URL;
+import static com.smirnovlabs.android.panda.Constants.PAUSE;
 import static com.smirnovlabs.android.panda.Constants.PLAY_SONG;
 import static com.smirnovlabs.android.panda.Constants.PREV_SONG;
-import static com.smirnovlabs.android.panda.Constants.PAUSE;
 import static com.smirnovlabs.android.panda.Constants.RESUME;
 import static com.smirnovlabs.android.panda.Constants.VOL_DOWN;
 import static com.smirnovlabs.android.panda.Constants.VOL_SET;
@@ -34,21 +33,19 @@ import static com.smirnovlabs.android.panda.Constants.VOL_UP;
 
 public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCallbacks{
 
-    private TextView mTextView;
+    /** Code used to get voice input as text. s*/
     private static final int SPEECH_REQUEST_CODE = 539890;
 
     /** Tag used for message passing. */
-    private static final String WEAR_MESSAGE_PATH = "/panda_communication_activity";
-
-
-    /** debug trying to use service*/
-    private static final String LONGTERM_ACTIVITY = "/panda_service";
+    private static final String PANDA_SERVICE_TAG = "/panda_service";
 
     /** Google API client used for message passing. */
     private GoogleApiClient mApiClient;
 
+    /** Debug tag.*/
     private String TAG = "PANDA WEAR";
 
+    /** Delim for splitting url and json. BE SURE to change the one in wear service as well if modifying. */
     private final String DELIM = "#";
 
     @Override
@@ -59,7 +56,7 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
-                mTextView = (TextView) stub.findViewById(R.id.text);
+                // mTextView = (TextView) stub.findViewById(R.id.text);
                 // add button click listener
                 Button voiceButton  = (Button) findViewById(R.id.start_voice_input);
                 voiceButton.setOnClickListener(new View.OnClickListener() {
@@ -103,9 +100,7 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
         if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
-
             String spokenText = results.get(0);
-            System.out.printf("Spoken Text: %s \n", spokenText); // debug TODO remove me in final version
             processCommand(spokenText);
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -129,7 +124,6 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
                 }
                 payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens,1, tokens.length));
                 System.out.println("payload: " + payload);
-                // add to json
                 data.addProperty("query", payload);
                 sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + PLAY_SONG, data);
                 break;
@@ -166,6 +160,7 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
                     sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + VOL_SET, data);
                 }
                 break;
+
             case "volume":
                 if (tokens[1].equals("up")) {
                     sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + VOL_UP, data);
@@ -177,7 +172,6 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
                     data.addProperty("value", payload);
                     sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + VOL_SET, data);
                 }
-
                 break;
 
             default:
@@ -187,17 +181,15 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
     }
 
 
-    /* Sends a url and data object to the phone (PandaCommunicationActivity) for a REST API call. */
+    /* Sends a url and data object to the phone (WearMessageListener) for a REST API call. */
    private void sendAPICall(String url, JsonObject data) {
-       // TODO - send a message here, wait for result
        String payload = url + DELIM + data.toString();
-       Log.d(TAG, "sending message, bytes: " + payload);
-       // sendMessage(WEAR_MESSAGE_PATH, payload); // TODO decide which to keep. maybe both?
-       sendMessage(LONGTERM_ACTIVITY, payload); // try service instead
+       Log.d(TAG, "sending message: " + payload);
+       sendMessage(PANDA_SERVICE_TAG, payload);
    }
 
 
-
+    /** Connect to the phone. */
     private void initGoogleApiClient() {
         mApiClient = new GoogleApiClient.Builder( this )
                 .addApi( Wearable.API )
@@ -217,7 +209,9 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
 
     }
 
-    /** */
+    /**
+     * Send an encoded message to the phone. Decoded in WearMessageListenerService in mobile app.
+     * */
     private void sendMessage( final String path, final String text ) {
         new Thread( new Runnable() {
             @Override
@@ -227,7 +221,6 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
                     MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
                             mApiClient, node.getId(), path, text.getBytes() ).await();
                 }
-
                 // display result
                 runOnUiThread( new Runnable() {
                     @Override
@@ -241,7 +234,9 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
         }).start();
     }
 
-    /** Disconnect from node when app quits. */
+    /**
+     * Disconnect from node when app quits.
+     * */
     @Override
     protected void onDestroy() {
         super.onDestroy();
