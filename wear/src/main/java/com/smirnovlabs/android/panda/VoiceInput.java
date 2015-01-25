@@ -20,6 +20,8 @@ import com.google.gson.JsonObject;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.smirnovlabs.android.panda.Constants.CARBON_API_URL;
+import static com.smirnovlabs.android.panda.Constants.DAY_SUMMARY;
 import static com.smirnovlabs.android.panda.Constants.MUSIC_API_URL;
 import static com.smirnovlabs.android.panda.Constants.NEXT_SONG;
 import static com.smirnovlabs.android.panda.Constants.PANDA_BASE_URL;
@@ -154,6 +156,15 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
 
             case "resume":
                 sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + RESUME, data);
+                break;
+
+            case "tell":
+                payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens, 1, tokens.length));
+                Log.d(TAG, "tell command with extra: " + payload);
+                if (payload.equals("me about my day")) {
+                    Log.d(TAG, "tell me about my day!");
+                    sendAPICall(PANDA_BASE_URL + CARBON_API_URL + DAY_SUMMARY, data);
+                }
                 break;
 
             case "set":
