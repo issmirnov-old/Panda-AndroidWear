@@ -8,7 +8,7 @@ This is the Android Wear component of [Panda](https://github.com/issmirnov/Panda
 
 ### Demo
 
-<iframe width="1280" height="720" src="//www.youtube.com/embed/0FgDQ-hXpao?rel=0" frameborder="0" allowfullscreen></iframe>
+http://www.youtube.com/embed/0FgDQ-hXpao
 
 
 ### Installation
