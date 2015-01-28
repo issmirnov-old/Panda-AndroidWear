@@ -9,5 +9,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
+    <string name="panda_status">Panda Status:</string>
+    <string name="connection">unknown</string>
+    <string name="connected">connected</string>
+    <string name="disconnected">disconnected</string>
 
 </resources>

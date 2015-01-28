@@ -205,7 +205,7 @@ public class MainActivity extends ActionBarActivity
     }
 
 
-    private void checkConnectionIndicator(){
+    void checkConnectionIndicator(){
         String url = PANDA_BASE_URL + HEALTH;
         Ion.with(getApplicationContext())
                 .load(url)
@@ -223,6 +223,8 @@ public class MainActivity extends ActionBarActivity
 
     /** Updates the status on whether panda is reachable or not.*/
     private void updateConnectionIndicator(boolean connected) {
+        // FragmentManager fm = getFragmentManager();
+
         if (connected) {
             Log.d(TAG, "connected to panda!");
         } else {
