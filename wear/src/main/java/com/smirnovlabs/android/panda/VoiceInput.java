@@ -1,8 +1,10 @@
 package com.smirnovlabs.android.panda;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.RecognizerIntent;
 import android.support.wearable.view.WatchViewStub;
 import android.util.Log;
@@ -191,8 +193,29 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
 
             default:
                 Log.d(TAG, "unknown command");
+                vibrate(2);
         }
 
+    }
+
+
+    /**
+     *  Vibrates the watch for the specified number of pulses.
+     * */
+    private void vibrate(int numPulses) {
+        Vibrator mVibrator  = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        long[] onePulse = {0, 200};
+        long[] twoPulses = {0, 200, 200, 200};
+        switch (numPulses) {
+            case 1:
+                mVibrator.vibrate(onePulse, -1);
+                break;
+            case 2:
+                mVibrator.vibrate(twoPulses, -1);
+                break;
+            default:
+                // do nothing
+        }
     }
 
 
@@ -200,6 +223,7 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
    private void sendAPICall(String url, JsonObject data) {
        String payload = url + DELIM + data.toString();
        Log.d(TAG, "sending message: " + payload);
+       vibrate(1); // vibrate to inform user that API call is being sent.
        sendMessage(PANDA_SERVICE_TAG, payload);
    }
 
@@ -221,7 +245,6 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
     @Override
     public void onConnectionSuspended(int i) {
         // do nothing.
-
     }
 
     /**
