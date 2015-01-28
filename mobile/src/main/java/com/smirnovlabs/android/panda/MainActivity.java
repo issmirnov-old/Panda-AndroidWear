@@ -1,9 +1,9 @@
 package com.smirnovlabs.android.panda;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -21,6 +21,7 @@ import com.koushikdutta.ion.Ion;
 
 import static com.smirnovlabs.android.panda.Constants.HEALTH;
 import static com.smirnovlabs.android.panda.Constants.PANDA_BASE_URL;
+
 
 
 public class MainActivity extends ActionBarActivity
@@ -89,11 +90,27 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
+    public void onNavigationDrawerItemSelected(int position) { // TODO do injections here to swap out fragments
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = null;
+        FragmentManager fragmentManager = getFragmentManager();
+
+        switch(position) {
+            default:
+            case 0: // control interface
+                fragment = new ControlFragment();
+                break;
+            case 1: // list of commands
+                fragment = new CommandsFragment();
+                break;
+            case 2: // settings
+                fragment = new SettingsFragment();
+                break;
+        }
+
+
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, fragment)
                 .commit();
     }
 
