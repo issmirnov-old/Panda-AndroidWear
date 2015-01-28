@@ -227,7 +227,6 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
        sendMessage(PANDA_SERVICE_TAG, payload);
    }
 
-
     /** Connect to the phone. */
     private void initGoogleApiClient() {
         mApiClient = new GoogleApiClient.Builder( this )

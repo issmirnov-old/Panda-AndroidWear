@@ -21,4 +21,7 @@ public class Constants {
     public static final String CARBON_API_URL = "/script/carbon";
     public static final String DAY_SUMMARY = "/day_summary";
 
+    // Health endpoint, used to check connection ot server.
+    public static final String HEALTH = "/health";
+
 }

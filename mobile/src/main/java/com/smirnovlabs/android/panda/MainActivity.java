@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+
+import static com.smirnovlabs.android.panda.Constants.HEALTH;
+import static com.smirnovlabs.android.panda.Constants.PANDA_BASE_URL;
 
 
 public class MainActivity extends ActionBarActivity
@@ -51,6 +55,8 @@ public class MainActivity extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         jsonParser = new JsonParser();
+
+        checkConnectionIndicator(); // update indicator
 
     }
 
@@ -178,6 +184,32 @@ public class MainActivity extends ActionBarActivity
             super.onAttach(activity);
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
+        }
+    }
+
+
+    private void checkConnectionIndicator(){
+        String url = PANDA_BASE_URL + HEALTH;
+        Ion.with(getApplicationContext())
+                .load(url)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        Log.d(TAG, "connection checker result: " + result);
+                        if (result.equals("\"OK\"")) {
+                            updateConnectionIndicator(true);
+                        }
+                    }
+                });
+    }
+
+    /** Updates the status on whether panda is reachable or not.*/
+    private void updateConnectionIndicator(boolean connected) {
+        if (connected) {
+            Log.d(TAG, "connected to panda!");
+        } else {
+            Log.d(TAG, "disconnected to panda!");
         }
     }
 
