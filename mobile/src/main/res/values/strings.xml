@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">Panda</string>
-    <string name="title_section1">Music</string>
-    <string name="title_section2">Other (Derp?)</string>
+    <string name="title_section1">Control Interface</string>
+    <string name="title_section2">Command List</string>
     <string name="title_section3">Settings</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
