@@ -21,53 +21,71 @@ uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from AndroidManifest.xml:8:5
 	android:name
 		ADDED from AndroidManifest.xml:8:22
-meta-data#com.google.android.gms.version
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from AndroidManifest.xml:9:5
+	android:name
+		ADDED from AndroidManifest.xml:9:22
+uses-permission#android.permission.VIBRATE
 ADDED from AndroidManifest.xml:10:5
 	android:name
-		ADDED from AndroidManifest.xml:10:16
-	android:value
-		ADDED from AndroidManifest.xml:10:62
-application
+		ADDED from AndroidManifest.xml:10:22
+meta-data#com.google.android.gms.version
 ADDED from AndroidManifest.xml:12:5
+	android:name
+		ADDED from AndroidManifest.xml:12:16
+	android:value
+		ADDED from AndroidManifest.xml:12:62
+application
+ADDED from AndroidManifest.xml:14:5
 MERGED from com.android.support:appcompat-v7:21.0.3:16:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
 MERGED from com.google.android.gms:play-services:6.5.87:20:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
 MERGED from AndroidManifest.xml:4:5
 	android:label
-		ADDED from AndroidManifest.xml:15:9
+		ADDED from AndroidManifest.xml:17:9
 	android:allowBackup
-		ADDED from AndroidManifest.xml:13:9
+		ADDED from AndroidManifest.xml:15:9
 	android:icon
-		ADDED from AndroidManifest.xml:14:9
-	android:theme
 		ADDED from AndroidManifest.xml:16:9
+	android:theme
+		ADDED from AndroidManifest.xml:18:9
 activity#com.smirnovlabs.android.panda.MainActivity
-ADDED from AndroidManifest.xml:17:9
+ADDED from AndroidManifest.xml:19:9
 	android:label
-		ADDED from AndroidManifest.xml:19:13
+		ADDED from AndroidManifest.xml:21:13
 	android:name
-		ADDED from AndroidManifest.xml:18:13
+		ADDED from AndroidManifest.xml:20:13
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:20:13
+ADDED from AndroidManifest.xml:22:13
 action#android.intent.action.MAIN
-ADDED from AndroidManifest.xml:21:17
-	android:name
-		ADDED from AndroidManifest.xml:21:25
-category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:23:17
 	android:name
-		ADDED from AndroidManifest.xml:23:27
+		ADDED from AndroidManifest.xml:23:25
+category#android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:25:17
+	android:name
+		ADDED from AndroidManifest.xml:25:27
 service#com.smirnovlabs.android.panda.WearMessageListenerService
-ADDED from AndroidManifest.xml:27:9
+ADDED from AndroidManifest.xml:30:9
 	android:name
-		ADDED from AndroidManifest.xml:27:18
+		ADDED from AndroidManifest.xml:30:18
 intent-filter#com.google.android.gms.wearable.BIND_LISTENER
-ADDED from AndroidManifest.xml:28:13
+ADDED from AndroidManifest.xml:31:13
 action#com.google.android.gms.wearable.BIND_LISTENER
-ADDED from AndroidManifest.xml:29:17
+ADDED from AndroidManifest.xml:32:17
 	android:name
-		ADDED from AndroidManifest.xml:29:25
+		ADDED from AndroidManifest.xml:32:25
+receiver#com.smirnovlabs.android.panda.BootBroadcastReceiver
+ADDED from AndroidManifest.xml:37:9
+	android:name
+		ADDED from AndroidManifest.xml:37:19
+intent-filter#android.intent.action.BOOT_COMPLETED
+ADDED from AndroidManifest.xml:38:13
+action#android.intent.action.BOOT_COMPLETED
+ADDED from AndroidManifest.xml:39:17
+	android:name
+		ADDED from AndroidManifest.xml:39:25
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:appcompat-v7:21.0.3:15:5
