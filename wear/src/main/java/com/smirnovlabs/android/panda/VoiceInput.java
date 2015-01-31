@@ -194,6 +194,10 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
             default:
                 Log.d(TAG, "unknown command");
                 vibrate(2);
+                // TODO - add pop up - didn't catch that
+                // also, relaunch the voice recognizer activity
+                displaySpeechRecognizer();
+
         }
 
     }
