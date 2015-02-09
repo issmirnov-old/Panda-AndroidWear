@@ -9,8 +9,8 @@ android {
         applicationId "com.smirnovlabs.android.panda"
         minSdkVersion 20
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1.0"
     }
     buildTypes {
         release {
