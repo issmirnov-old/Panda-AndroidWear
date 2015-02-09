@@ -171,7 +171,11 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
 
             case "set":
                 if (tokens[1].equals("volume")) {
-                    payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens, 2, tokens.length));
+                    if (tokens[2].equals("to")) {
+                        payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens, 3, tokens.length));
+                    } else {
+                        payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens, 2, tokens.length));
+                    }
                     System.out.println("payload: " + payload);
                     data.addProperty("value", payload);
                     sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + VOL_SET, data);

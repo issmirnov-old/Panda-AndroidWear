@@ -14,4 +14,56 @@
     <string name="connected">connected</string>
     <string name="disconnected">disconnected</string>
 
+
+
+
+
+    <!-- Here be tons of strings defined for the command list. -->
+    <string name="play_song_title">Play {name of song or artist}</string>
+    <string name="pause_song_title">Pause</string>
+    <string name="resume_song_title">Play</string>
+    <string name="previous_song_title">Previous</string>
+    <string name="next_song_title">Next | Skip</string>
+    <string name="volume_up_title">Volume Up</string>
+    <string name="volume_down_title">Volume Down</string>
+    <string name="volume_set_title">Set volume [to] x[%]</string>
+    <string name="day_summary_title">Tell me about my day</string>
+
+    <string name="play_song_description">search for song matching the query</string>
+    <string name="pause_song_description">pause song</string>
+    <string name="resume_song_description">resume playing song</string>
+    <string name="previous_song_description">jump back a track</string>
+    <string name="next_song_description">skip forward a track</string>
+    <string name="volume_up_description">raise volume by 10%</string>
+    <string name="volume_down_description">lower volume by 10%</string>
+    <string name="volume_set_description">set volume to arbitrary percentage</string>
+    <string name="day_summary_description">tell carbon to read my day summary</string>
+
+
+    <string-array
+        name="titles_array">
+        <item>@string/play_song_title</item>
+        <item>@string/pause_song_title</item>
+        <item>@string/resume_song_title</item>
+        <item>@string/previous_song_title</item>
+        <item>@string/next_song_title</item>
+        <item>@string/volume_up_title</item>
+        <item>@string/volume_down_title</item>
+        <item>@string/volume_set_title</item>
+        <item>@string/day_summary_title</item>
+    </string-array>
+
+    <string-array
+        name="descriptions_array">
+        <item>@string/play_song_description</item>
+        <item>@string/pause_song_description</item>
+        <item>@string/resume_song_description</item>
+        <item>@string/previous_song_description</item>
+        <item>@string/next_song_description</item>
+        <item>@string/volume_up_description</item>
+        <item>@string/volume_down_description</item>
+        <item>@string/volume_set_description</item>
+        <item>@string/day_summary_description</item>
+    </string-array>
+
 </resources>

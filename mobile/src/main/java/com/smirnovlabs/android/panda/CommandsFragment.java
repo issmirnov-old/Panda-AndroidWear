@@ -30,11 +30,8 @@ public class CommandsFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
 
 
-        String[] titles = new String[] { "Play song", "pause", "next",
-                "previous", "set volume", "volume up", "tell me about my day"}; // TODO get this from some resource
-
-        String[] descriptions = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7" }; // TODO get this from some resource
+        String[] titles = getResources().getStringArray(R.array.titles_array);
+        String[] descriptions = getResources().getStringArray(R.array.descriptions_array);
 
         CommandListAdapter adapter = new CommandListAdapter(getActivity().getApplicationContext(), titles, descriptions);
         setListAdapter(adapter);
