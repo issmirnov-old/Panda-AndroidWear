@@ -283,4 +283,6 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
         super.onDestroy();
         mApiClient.disconnect();
     }
+
+    //TODO - implement reverse message listener, for displaying panda status on wear. (maybe)
 }

@@ -1,21 +1,15 @@
 package com.smirnovlabs.android.panda;
 
-import android.app.Fragment;
+import android.app.ListFragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
-
-import static com.smirnovlabs.android.panda.Constants.HEALTH;
-import static com.smirnovlabs.android.panda.Constants.PANDA_BASE_URL;
+import android.widget.ListView;
+import android.widget.Toast;
 
 /** Shows a list of commands. */
-public class CommandsFragment extends Fragment {
+public class CommandsFragment extends ListFragment {
     private String TAG = "PANDA command fragment";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -23,40 +17,36 @@ public class CommandsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_commands, container, false);
 
-        TextView connection = (TextView) v.findViewById(R.id.connection);
-        checkConnectionIndicator(v);
+        // Initialize the list view.
+
 
 
 
         return v;
     }
 
-    void checkConnectionIndicator(final View v){
-        String url = PANDA_BASE_URL + HEALTH;
-        Ion.with(getActivity().getApplicationContext())
-                .load(url)
-                .asString()
-                .setCallback(new FutureCallback<String>() {
-                    @Override
-                    public void onCompleted(Exception e, String result) {
-                        Log.d(TAG, "connection checker result: " + result);
-                        updateConnectionIndicator(v, result.equals("\"OK\""));
-                    }
-                });
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+        String[] titles = new String[] { "Play song", "pause", "next",
+                "previous", "set volume", "volume up", "tell me about my day"}; // TODO get this from some resource
+
+        String[] descriptions = new String[] { "Android", "iPhone", "WindowsMobile",
+                "Blackberry", "WebOS", "Ubuntu", "Windows7" }; // TODO get this from some resource
+
+        CommandListAdapter adapter = new CommandListAdapter(getActivity().getApplicationContext(), titles, descriptions);
+        setListAdapter(adapter);
     }
 
-    /** Updates the status on whether panda is reachable or not.*/
-    private void updateConnectionIndicator(View v, boolean connected) {
-        // FragmentManager fm = getFragmentManager();
-
-        TextView connection = (TextView) v.findViewById(R.id.connection);
-
-        if (connected) {
-            Log.d(TAG, "connected to panda!");
-            connection.setText(getResources().getText(R.string.connected));
-        } else {
-            Log.d(TAG, "disconnected to panda!");
-            connection.setText(getResources().getText(R.string.disconnected));
-        }
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        // do something with the data
+        String item = (String) getListAdapter().getItem(position);
+        Toast.makeText(getActivity(), item + " selected", Toast.LENGTH_LONG).show();
     }
+
+
+    // TODO - add list of command. List view should work, name of command in bold, params in italic.
 }

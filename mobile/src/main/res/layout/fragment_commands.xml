@@ -4,20 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/panda_status"
-        android:id="@+id/panda_status"
-        android:layout_gravity="center_horizontal" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/connection"
-        android:id="@+id/connection"
-        android:layout_gravity="center_horizontal" />
+    <ListView
+        android:id="@+id/command_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
 </LinearLayout>
