@@ -40,8 +40,7 @@ public class ControlFragment extends Fragment {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         Log.d(TAG, "connection checker result: " + result);
-                        String OK = "\"OK\"";
-                        updateConnectionIndicator(v, OK.equals(result));
+                        updateConnectionIndicator(v, result.equals("\"OK\""));
                     }
                 });
     }
