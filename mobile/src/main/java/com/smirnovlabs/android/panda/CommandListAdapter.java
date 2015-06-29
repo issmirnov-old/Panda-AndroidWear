@@ -5,11 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * TODO add description
+ * Adapter for displaying commands with an icon and help text.
  */
 public class CommandListAdapter extends ArrayAdapter<String> {
     private final Context context;
@@ -21,7 +20,6 @@ public class CommandListAdapter extends ArrayAdapter<String> {
         this.context = context;
         this.titles = titles;
         this.descriptions = descriptions;
-
     }
 
     @Override
@@ -31,21 +29,8 @@ public class CommandListAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.command_row_layout, parent, false);
         TextView firstLine = (TextView) rowView.findViewById(R.id.firstLine);
         TextView secondLine = (TextView) rowView.findViewById(R.id.secondLine);
-        ImageView icon = (ImageView) rowView.findViewById(R.id.icon);
-
-
         firstLine.setText(titles[position]);
         secondLine.setText(descriptions[position]);
-
-        /*
-        // change the icon for Windows and iPhone
-        String s = values[position];
-        if (s.startsWith("iPhone")) {
-            imageView.setImageResource(no);
-        } else {
-            imageView.setImageResource(ok);
-        }
-        */
         return rowView;
     }
 }

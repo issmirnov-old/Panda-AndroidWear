@@ -23,7 +23,7 @@ public class ControlFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_control, container, false);
 
-        TextView connection = (TextView) v.findViewById(R.id.connection);
+        // TextView connection = (TextView) v.findViewById(R.id.connection);
         checkConnectionIndicator(v);
 
 
