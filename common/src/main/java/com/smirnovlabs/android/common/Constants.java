@@ -25,4 +25,7 @@ public class Constants {
 
     // Health endpoint, used to check connection ot server.
     public static final String HEALTH = "/health";
+
+    /** Key used for storing aux data in jsons.*/
+    public static final String DATA_KEY = "data";
 }
