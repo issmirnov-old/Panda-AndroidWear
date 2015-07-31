@@ -34,4 +34,8 @@ dependencies {
 
     // Packaging this into an APK for fast deployment
     wearApp project(':wear')
+
+    // Common code across mobile and wear.
+    compile project(':common')
+
 }
