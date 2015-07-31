@@ -7,19 +7,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.smirnovlabs.android.panda.logic.Command;
+
+import java.util.ArrayList;
+
 /**
  * Adapter for displaying commands with an icon and help text.
  */
-public class CommandListAdapter extends ArrayAdapter<String> {
+public class CommandListAdapter extends ArrayAdapter<Command> {
     private final Context context;
-    private final String[] titles;
-    private final String[] descriptions;
+    private ArrayList<Command> commands;
 
-    public CommandListAdapter(Context context, String[] titles, String[] descriptions) {
-        super(context, R.layout.command_row_layout, titles);
+    public CommandListAdapter(Context context, ArrayList<Command> commands) {
+        super(context, R.layout.command_row_layout, commands);
         this.context = context;
-        this.titles = titles;
-        this.descriptions = descriptions;
+        this.commands = commands;
     }
 
     @Override
@@ -29,8 +31,10 @@ public class CommandListAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.command_row_layout, parent, false);
         TextView firstLine = (TextView) rowView.findViewById(R.id.firstLine);
         TextView secondLine = (TextView) rowView.findViewById(R.id.secondLine);
-        firstLine.setText(titles[position]);
-        secondLine.setText(descriptions[position]);
+
+        Command c = commands.get(position);
+        firstLine.setText(c.getTitle());
+        secondLine.setText(c.getDescription());
         return rowView;
     }
 }

@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.smirnovlabs.android.panda.MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,14 +27,14 @@
         </activity>
 
         <!-- Long running service that catches messages from watch. -->
-        <service android:name=".WearMessageListenerService">
+        <service android:name=".service.WearMessageListenerService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
 
         <!-- Used to launch WearMessageListenerService -->
-        <receiver android:name=".BootBroadcastReceiver">
+        <receiver android:name=".service.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

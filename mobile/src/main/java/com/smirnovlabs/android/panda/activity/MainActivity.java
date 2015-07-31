@@ -1,4 +1,4 @@
-package com.smirnovlabs.android.panda;
+package com.smirnovlabs.android.panda.activity;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -13,7 +13,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-
+import com.smirnovlabs.android.panda.fragment.CommandsFragment;
+import com.smirnovlabs.android.panda.fragment.ControlFragment;
+import com.smirnovlabs.android.panda.fragment.NavigationDrawerFragment;
+import com.smirnovlabs.android.panda.R;
+import com.smirnovlabs.android.panda.fragment.SettingsFragment;
 
 
 public class MainActivity extends ActionBarActivity

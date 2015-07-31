@@ -50,7 +50,7 @@ MERGED from AndroidManifest.xml:4:5
 		ADDED from AndroidManifest.xml:16:9
 	android:theme
 		ADDED from AndroidManifest.xml:18:9
-activity#com.smirnovlabs.android.panda.MainActivity
+activity#com.smirnovlabs.android.panda.activity.MainActivity
 ADDED from AndroidManifest.xml:19:9
 	android:label
 		ADDED from AndroidManifest.xml:21:13
@@ -66,7 +66,7 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:25:17
 	android:name
 		ADDED from AndroidManifest.xml:25:27
-service#com.smirnovlabs.android.panda.WearMessageListenerService
+service#com.smirnovlabs.android.panda.service.WearMessageListenerService
 ADDED from AndroidManifest.xml:30:9
 	android:name
 		ADDED from AndroidManifest.xml:30:18
@@ -76,7 +76,7 @@ action#com.google.android.gms.wearable.BIND_LISTENER
 ADDED from AndroidManifest.xml:32:17
 	android:name
 		ADDED from AndroidManifest.xml:32:25
-receiver#com.smirnovlabs.android.panda.BootBroadcastReceiver
+receiver#com.smirnovlabs.android.panda.service.BootBroadcastReceiver
 ADDED from AndroidManifest.xml:37:9
 	android:name
 		ADDED from AndroidManifest.xml:37:19

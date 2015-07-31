@@ -1,9 +1,11 @@
-package com.smirnovlabs.android.panda;
+package com.smirnovlabs.android.panda.service;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import com.smirnovlabs.android.panda.service.WearMessageListenerService;
 
 /**
  * Starts WearMessageListenerService via an intent.

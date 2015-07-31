@@ -1,4 +1,4 @@
-package com.smirnovlabs.android.panda;
+package com.smirnovlabs.android.panda.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.smirnovlabs.android.panda.R;
 
 import static com.smirnovlabs.android.common.Constants.HEALTH;
 import static com.smirnovlabs.android.common.Constants.PANDA_BASE_URL;
@@ -22,12 +23,7 @@ public class ControlFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_control, container, false);
-
-        // TextView connection = (TextView) v.findViewById(R.id.connection);
         checkConnectionIndicator(v);
-
-
-
         return v;
     }
 

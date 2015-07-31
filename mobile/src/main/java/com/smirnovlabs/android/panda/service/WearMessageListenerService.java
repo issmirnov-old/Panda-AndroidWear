@@ -1,4 +1,4 @@
-package com.smirnovlabs.android.panda;
+package com.smirnovlabs.android.panda.service;
 
 import android.util.Log;
 import android.widget.Toast;
