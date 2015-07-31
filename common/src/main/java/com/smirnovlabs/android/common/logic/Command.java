@@ -1,4 +1,4 @@
-package com.smirnovlabs.android.panda.logic;
+package com.smirnovlabs.android.common.logic;
 
 import android.content.Context;
 import android.util.Log;

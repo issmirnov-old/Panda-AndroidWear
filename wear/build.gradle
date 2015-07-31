@@ -26,11 +26,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-wearable:+'
     compile 'com.android.support:support-v4:+'
 
-    // Needed for JSON encoding.
-    compile 'com.koushikdutta.ion:ion:2.+'
-
-    // String utils
-    compile group: 'com.google.guava', name: 'guava', version: '12.0'
 
     // Common code across mobile and wear.
     compile project(':common')

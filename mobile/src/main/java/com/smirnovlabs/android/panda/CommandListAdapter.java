@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.smirnovlabs.android.panda.logic.Command;
+import com.smirnovlabs.android.common.logic.Command;
 
 import java.util.ArrayList;
 

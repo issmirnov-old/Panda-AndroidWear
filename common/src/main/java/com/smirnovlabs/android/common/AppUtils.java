@@ -1,21 +1,10 @@
-package com.smirnovlabs.android.panda.fragment;
+package com.smirnovlabs.android.common;
 
-import android.app.ListFragment;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import com.google.gson.JsonObject;
-import com.smirnovlabs.android.panda.CommandListAdapter;
-import com.smirnovlabs.android.panda.R;
 import com.smirnovlabs.android.common.logic.Command;
 
 import java.util.ArrayList;
 
+import static com.smirnovlabs.android.common.Constants.CARBON_API_URL;
 import static com.smirnovlabs.android.common.Constants.DAY_SUMMARY;
 import static com.smirnovlabs.android.common.Constants.MOST_PLAYED;
 import static com.smirnovlabs.android.common.Constants.MUSIC_API_URL;
@@ -29,45 +18,11 @@ import static com.smirnovlabs.android.common.Constants.TOP_RATED;
 import static com.smirnovlabs.android.common.Constants.VOL_DOWN;
 import static com.smirnovlabs.android.common.Constants.VOL_SET;
 import static com.smirnovlabs.android.common.Constants.VOL_UP;
-import static com.smirnovlabs.android.common.Constants.DATA_KEY;
-import static com.smirnovlabs.android.common.Constants.CARBON_API_URL;
 
-/** Shows a list of commands. */
-public class CommandsFragment extends ListFragment {
-    private String TAG = "PANDA command fragment";
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v =  inflater.inflate(R.layout.fragment_commands, container, false);
-
-        return v;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        CommandListAdapter adapter = new CommandListAdapter(getActivity().getApplicationContext(), generateCommands());
-        setListAdapter(adapter);
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        Command c = (Command) getListAdapter().getItem(position);
-        if (c.isPayloadRequired()) {
-            Log.d(TAG, "payload required!");
-            JsonObject payload = new JsonObject();
-            String debug = "Ellie";
-            payload.addProperty(DATA_KEY, debug);
-            // TODO show voice prompter. or dialog. save into payload.
-            c.callAPI(v.getContext(), payload);
-        } else {
-            c.callAPI(v.getContext());
-        }
-        Toast.makeText(getActivity(), c.getTitle() + " selected", Toast.LENGTH_LONG).show();
-
-    }
-
+/**
+ * Created by vania on 7/30/15.
+ */
+public class AppUtils {
 
     /** Returns hard coded list of commands. What's a better way to do this? */
     private ArrayList<Command> generateCommands() {
@@ -77,7 +32,7 @@ public class CommandsFragment extends ListFragment {
                 "search for song matching the query",
                 PANDA_BASE_URL + MUSIC_API_URL + PLAY_SONG,
                 true
-                ));
+        ));
         result.add(new Command(
                 "Pause",
                 "pause song",
