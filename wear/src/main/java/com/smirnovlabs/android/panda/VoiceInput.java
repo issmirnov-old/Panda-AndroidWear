@@ -24,6 +24,8 @@ import java.util.List;
 
 import static com.smirnovlabs.android.panda.Constants.CARBON_API_URL;
 import static com.smirnovlabs.android.panda.Constants.DAY_SUMMARY;
+import static com.smirnovlabs.android.panda.Constants.HEALTH;
+import static com.smirnovlabs.android.panda.Constants.MOST_PLAYED;
 import static com.smirnovlabs.android.panda.Constants.MUSIC_API_URL;
 import static com.smirnovlabs.android.panda.Constants.NEXT_SONG;
 import static com.smirnovlabs.android.panda.Constants.PANDA_BASE_URL;
@@ -31,6 +33,7 @@ import static com.smirnovlabs.android.panda.Constants.PAUSE;
 import static com.smirnovlabs.android.panda.Constants.PLAY_SONG;
 import static com.smirnovlabs.android.panda.Constants.PREV_SONG;
 import static com.smirnovlabs.android.panda.Constants.RESUME;
+import static com.smirnovlabs.android.panda.Constants.TOP_RATED;
 import static com.smirnovlabs.android.panda.Constants.VOL_DOWN;
 import static com.smirnovlabs.android.panda.Constants.VOL_SET;
 import static com.smirnovlabs.android.panda.Constants.VOL_UP;
@@ -125,11 +128,16 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
                 if (tokens.length == 1) {
                     sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + RESUME, data);
                     break;
+                } else if (text.contains("top rated")) {
+                    sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + TOP_RATED, data);
+                } else if (text.contains("most played")) {
+                    sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + MOST_PLAYED, data);
+                } else { // name of song
+                    payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens,1, tokens.length));
+                    System.out.println("payload: " + payload);
+                    data.addProperty("query", payload);
+                    sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + PLAY_SONG, data);
                 }
-                payload = Joiner.on(" ").join(Arrays.copyOfRange(tokens,1, tokens.length));
-                System.out.println("payload: " + payload);
-                data.addProperty("query", payload);
-                sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + PLAY_SONG, data);
                 break;
 
             case "next":
@@ -158,6 +166,11 @@ public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCa
 
             case "resume":
                 sendAPICall(PANDA_BASE_URL + MUSIC_API_URL + RESUME, data);
+                break;
+
+            case "health":
+                sendAPICall(PANDA_BASE_URL + HEALTH, data);
+                // TODO process return value here.
                 break;
 
             case "tell":

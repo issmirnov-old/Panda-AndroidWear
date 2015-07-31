@@ -16,6 +16,8 @@ public class Constants {
     public static final String VOL_UP = "/volume_up";
     public static final String VOL_DOWN = "/volume_down";
     public static final String VOL_SET = "/volume_set";
+    public static final String TOP_RATED = "/top_rated";
+    public static final String MOST_PLAYED = "/most_played";
 
     //  === API's for triggering general carbon scripts.
     public static final String CARBON_API_URL = "/script/carbon";
