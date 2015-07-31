@@ -25,7 +25,7 @@ import static com.smirnovlabs.android.common.Constants.VOL_UP;
 public class AppUtils {
 
     /** Returns hard coded list of commands. What's a better way to do this? */
-    private ArrayList<Command> generateCommands() {
+    public static  ArrayList<Command> generateCommands() {
         ArrayList<Command> result = new ArrayList<>();
         result.add(new Command(
                 "Play {name of song or artist}",

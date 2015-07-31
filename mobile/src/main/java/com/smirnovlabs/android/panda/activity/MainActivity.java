@@ -9,14 +9,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
+import com.smirnovlabs.android.panda.R;
 import com.smirnovlabs.android.panda.fragment.CommandsFragment;
 import com.smirnovlabs.android.panda.fragment.ControlFragment;
 import com.smirnovlabs.android.panda.fragment.NavigationDrawerFragment;
-import com.smirnovlabs.android.panda.R;
 import com.smirnovlabs.android.panda.fragment.SettingsFragment;
 
 
@@ -34,9 +30,6 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
-
-    private JsonParser jsonParser;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,42 +43,12 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        jsonParser = new JsonParser();
-    }
-
-    /**
-     * Performs async API call to Panda server. Returns result from server as string.
-     * */
-    private void performAPICall(String url, JsonObject data ) {
-        System.out.printf("performing API call to %s with dataJson: %s: ", url, data.toString());
-        Ion.with(getApplicationContext())
-            .load(url)
-            .setJsonObjectBody(data)
-            .asJsonObject()
-            .setCallback(new FutureCallback<JsonObject>() {
-                @Override
-                public void onCompleted(Exception e, JsonObject result) {
-                    // do stuff with the result or error
-                    displayResult(result);
-                }
-            });
-    }
-
-    /** Processed returned json from server, displays to user if needed. */
-    private void displayResult(JsonObject result) {
-        if (result == null) {
-            System.out.printf("Null result. Did you finish the API calls?");
-            return;
-        }
-        System.out.printf("Returned json: %s \n", result.toString());
-        // TODO implement me
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) { // TODO do injections here to swap out fragments
         // update the main content by replacing fragments
-        Fragment fragment = null;
+        Fragment fragment;
         FragmentManager fragmentManager = getFragmentManager();
 
         switch(position) {
