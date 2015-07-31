@@ -35,6 +35,8 @@ public class Command {
     /** Sends POST request with json payload.*/
     public void callAPI(Context c, JsonObject payload) {
         Log.d(TAG, "calling api: " + apiEndpoint);
+        Log.d(TAG, "payload:" + payload );
+        Log.d(TAG, "json? " + payload.isJsonObject());
         Ion.with(c)
             .load(apiEndpoint)
             .setJsonObjectBody(payload)
@@ -53,6 +55,7 @@ public class Command {
         Log.d(TAG, "calling api: " + apiEndpoint);
         Ion.with(c)
             .load(apiEndpoint)
+            .setJsonObjectBody(new JsonObject()) // Why is this awful hack needed? Well, PHP and Android don't play too nice, so I have to resort to this crap.
             .asJsonObject()
             .setCallback(new FutureCallback<JsonObject>() {
                 @Override
@@ -61,6 +64,7 @@ public class Command {
                     Log.d(TAG, "result: " + result);
                 }
             });
+
     }
 
 
