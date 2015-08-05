@@ -12,8 +12,8 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.smirnovlabs.android.panda.R;
 
-import static com.smirnovlabs.android.common.Constants.HEALTH;
-import static com.smirnovlabs.android.common.Constants.PANDA_BASE_URL;
+import static com.smirnovlabs.android.common.util.Constants.HEALTH;
+import static com.smirnovlabs.android.common.util.Constants.PANDA_BASE_URL;
 
 /** Shows a list of commands. */
 public class ControlFragment extends Fragment {

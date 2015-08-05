@@ -22,21 +22,21 @@ import com.google.gson.JsonObject;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.smirnovlabs.android.common.Constants.CARBON_API_URL;
-import static com.smirnovlabs.android.common.Constants.DAY_SUMMARY;
-import static com.smirnovlabs.android.common.Constants.HEALTH;
-import static com.smirnovlabs.android.common.Constants.MOST_PLAYED;
-import static com.smirnovlabs.android.common.Constants.MUSIC_API_URL;
-import static com.smirnovlabs.android.common.Constants.NEXT_SONG;
-import static com.smirnovlabs.android.common.Constants.PANDA_BASE_URL;
-import static com.smirnovlabs.android.common.Constants.PAUSE;
-import static com.smirnovlabs.android.common.Constants.PLAY_SONG;
-import static com.smirnovlabs.android.common.Constants.PREV_SONG;
-import static com.smirnovlabs.android.common.Constants.RESUME;
-import static com.smirnovlabs.android.common.Constants.TOP_RATED;
-import static com.smirnovlabs.android.common.Constants.VOL_DOWN;
-import static com.smirnovlabs.android.common.Constants.VOL_SET;
-import static com.smirnovlabs.android.common.Constants.VOL_UP;
+import static com.smirnovlabs.android.common.util.Constants.CARBON_API_URL;
+import static com.smirnovlabs.android.common.util.Constants.DAY_SUMMARY;
+import static com.smirnovlabs.android.common.util.Constants.HEALTH;
+import static com.smirnovlabs.android.common.util.Constants.MOST_PLAYED;
+import static com.smirnovlabs.android.common.util.Constants.MUSIC_API_URL;
+import static com.smirnovlabs.android.common.util.Constants.NEXT_SONG;
+import static com.smirnovlabs.android.common.util.Constants.PANDA_BASE_URL;
+import static com.smirnovlabs.android.common.util.Constants.PAUSE;
+import static com.smirnovlabs.android.common.util.Constants.PLAY_SONG;
+import static com.smirnovlabs.android.common.util.Constants.PREV_SONG;
+import static com.smirnovlabs.android.common.util.Constants.RESUME;
+import static com.smirnovlabs.android.common.util.Constants.TOP_RATED;
+import static com.smirnovlabs.android.common.util.Constants.VOL_DOWN;
+import static com.smirnovlabs.android.common.util.Constants.VOL_SET;
+import static com.smirnovlabs.android.common.util.Constants.VOL_UP;
 
 public class VoiceInput extends Activity implements GoogleApiClient.ConnectionCallbacks{
 

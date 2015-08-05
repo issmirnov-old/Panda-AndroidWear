@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.google.gson.JsonObject;
-import com.smirnovlabs.android.common.AppUtils;
+import com.smirnovlabs.android.common.util.AppUtils;
 import com.smirnovlabs.android.common.logic.Command;
 import com.smirnovlabs.android.panda.CommandListAdapter;
 import com.smirnovlabs.android.panda.R;
@@ -20,7 +20,7 @@ import com.smirnovlabs.android.panda.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.smirnovlabs.android.common.Constants.DATA_KEY;
+import static com.smirnovlabs.android.common.util.Constants.DATA_KEY;
 
 /** Shows a list of commands. */
 public class CommandsFragment extends ListFragment {
@@ -36,12 +36,10 @@ public class CommandsFragment extends ListFragment {
     private View pendingView;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_commands, container, false);
-
         return v;
     }
 
@@ -64,7 +62,6 @@ public class CommandsFragment extends ListFragment {
         } else {
             c.callAPI(v.getContext());
         }
-        //Toast.makeText(getActivity(), c.getTitle() + " selected", Toast.LENGTH_LONG).show();
     }
 
 
@@ -91,7 +88,6 @@ public class CommandsFragment extends ListFragment {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
-
             JsonObject payload = new JsonObject();
             payload.addProperty(DATA_KEY, spokenText);
             pendingCommand.callAPI(pendingView.getContext(), payload);

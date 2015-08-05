@@ -1,4 +1,4 @@
-package com.smirnovlabs.android.common;
+package com.smirnovlabs.android.common.util;
 
 /**
  * Constants for Panda Home Automation app.
